@@ -1,0 +1,64 @@
+<head>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+</head>
+
+<div>  
+<h1>Hello Cherwell!</h1>  
+</div>
+
+<body>
+
+    <div>
+        <h2>Lookup triangle coordinates by row/column designation:</h2>
+        <input type="text" id="row" size="5" />
+        <input type="text" id="column" size="5" />
+        <input type="button" value="Lookup" id="lookupByRowColumn" />
+    </div>
+    <div id="lookup_rc_results"></div>
+    <div>
+        <h2>Lookup triangle by coordinate</h2>
+        <input type="text" id="x1" size="5" />
+        <input type="text" id="y1" size="5" />
+        <input type="button" value="Lookup" id="lookupByXY" />
+    </div>
+    <div id="lookup_xy_results"></div>
+</body>
+
+
+<script>
+    document.getElementById("lookupByRowColumn").addEventListener("click", function() {
+        var row = $("#row").val();
+        var column = $("#column").val();
+        lookupByRowColumn(row, column);
+    }, false);
+
+    function lookupByRowColumn(row, column) {
+        $.getJSON(
+            "/api/coordinate/row/" + row + "/col/" + column,
+            function(results) {
+                $("#lookup_rc_results").text(JSON.stringify(results));
+            }
+        )
+        .error((x, t, e) => {
+            $("#lookup_rc_results").text("error: " + x.responseText);
+        });
+    }
+    
+    document.getElementById("lookupByXY").addEventListener("click", function() {
+        var x = $("#x1").val();
+        var y = $("#y1").val();
+        lookupByXY(x, y);
+    }, false);
+
+    function lookupByXY(x, y) {
+        $.getJSON(
+            "/api/coordinate/x/" + x + "/y/" + y,
+            function(results) {
+                $("#lookup_xy_results").text(JSON.stringify(results));
+            }
+        )
+        .error((x, t, e) => {
+            $("#lookup_xy_results").text("error: " + x.responseText);
+        });
+    }
+</script>

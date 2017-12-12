@@ -18,12 +18,16 @@ namespace Cherwell.Controllers
             this.service = service;
         }
 
+        public IActionResult Index() {
+            return View();
+        }
+
         [HttpGet("row/{row}/col/{col}", Name = "GetByRowCol")]
         public IActionResult GetByRowCol(char row, int col)
         {
             try
             {
-                var triangle = service.GetByRowAndColumn(row, col);
+                var triangle = service.GetByRowAndColumn(Char.ToUpper(row), col);
                 return new ObjectResult(triangle.Coordinates);
             }
             catch (ArgumentOutOfRangeException e)
